@@ -1,4 +1,4 @@
-# ARPhotoViewerDemo
+# ARPhotoViewerDemo (iOS Swift echoAR Demo)
 
 # Overview
 

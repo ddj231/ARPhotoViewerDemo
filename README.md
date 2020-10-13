@@ -8,12 +8,15 @@ The pictures are added with a picture frame, which is a 3D model brought in from
 # Setup
 * Clone this project and open in Xcode 
 * Set your echoAR API key in the EchoAR.swift file
-* Add a picture frame models to echoAR console (you can search and find one on the platform itself) 
-* Note: this demo is using a mirror 3D model as the picture frame
+* Add a picture frame model to the echoAR console (you can search and find one on the platform itself) 
+* Note: this demo is using a mirror 3D model as its picture frame
 * Add the entry id of your picture frame model, to the ViewController.swift file
 
 # Run
 * [Build and run the AR Application](https://docs.echoar.xyz/swift/adding-ar-capabilities)
+* make sure your signing and capabilities are correctly configured so you can run on device.
+* connect your device to your computer (unlock it)
+* select your device, and build and run.
 
 # Learn more 
 Refer to our [documentation](https://docs.echoar.xyz/swift/installation) to learn more about how to use Swift and echoAR.

@@ -26,5 +26,5 @@ Feel free to reach out at <support@echoAR.xyz> or join our [support channel on S
 ![gif](./Gifs/usage_example.gif)
 
 
-![screenshot](./Screenshots/screenshot1.JPG)
+![screenshot](./Screenshots/frame.png)
 

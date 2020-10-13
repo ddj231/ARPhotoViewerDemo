@@ -7,4 +7,8 @@ The pictures are added with a picture frame, which is a 3D model brought in from
 
 # Screenshots
 
+![gif](./Gifs/usage_example.gif)
+
+
 ![screenshot](./Screenshots/screenshot1.JPG)
+

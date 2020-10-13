@@ -23,49 +23,64 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var planes: [SCNNode] = []
     var e: EchoAR?
     
-    let echoImgEntryId = "ef28bae9-5e6a-4174-9a64-c3773ff59e17"
+    let echoImgEntryId = "ef28bae9-5e6a-4174-9a64-c3773ff59e17" // ENTER YOUR ECHO AR ENTRY ID FOR A PICTURE FRAME
+    
     var pictureFrameNode: SCNNode?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //set the color to use for the plane
         planeColor = UIColor(red: CGFloat(102.0/255) , green: CGFloat(189.0/255), blue: CGFloat(60.0/255), alpha: CGFloat(0.6))
         
+        //plane color off will be used as the color of our planes when they are toggled off
         planeColorOff = UIColor(red: CGFloat(102.0/255) , green: CGFloat(189.0/255), blue: CGFloat(60.0/255), alpha: CGFloat(0.0))
-
-        // Do any additional setup after loading the view.
+        
+        //initialize our echo ar objec
         e = EchoAR()
-        e!.loadSceneFromEntryID(entryID: echoImgEntryId, completion: { (scene) in
-            guard let selectedNode = scene.rootNode.childNodes.first else {return}
-            print("got it")
-            self.pictureFrameNode = selectedNode
-        })
         
         //set scene view to automatically add omni directional light when needed
         sceneView.autoenablesDefaultLighting = true
         sceneView.automaticallyUpdatesLighting = true
-
-        
-        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        //set our session configuration, so we are tracking vertical planes
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .vertical
         sceneView.session.run(configuration)
 
         sceneView.delegate = self
         
+        //show debug feature points
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
+        //add gesture recognizer, to perform some action whenever the user taps
+        //the scene view
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(screenTapped(gesture:)))
         sceneView.addGestureRecognizer(gestureRecognizer)
         
+        //make the view and text that appear when a user adds an image invisible.
         imageAddedText.alpha = 0.0
         previewImageView.alpha = 0.0
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        //when the view appears, present an alert to the user
+        //letting them know to scan a horizontal surface
+        let alert = UIAlertController(title: "Scan And Get Started", message: "Move your phone around to scan a vertical plane (find a vertical surface with a pattern for ease with scanning)", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+
+
+    
     @IBAction func addPhotoTapped(_ sender: Any) {
+        //when the user taps a photo
+        //display an image picker which allows the user to select a photo
+        //from their device
         let picker = UIImagePickerController()
         picker.allowsEditing = true
         picker.delegate = self
@@ -73,45 +88,74 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     
+    /*
+     screenTapped(gesture:)
+     takes a tap gesture recognizer as an argument
+     calls addImage() -- to add an image on the tapped location
+     */
     @objc func screenTapped(gesture: UITapGestureRecognizer){
         let gesturePos = gesture.location(in: self.sceneView)
         
+        //get a 3D point from the tapped location
+        //check if the user tapped an existing plane
         let hitTestResults = sceneView.hitTest(gesturePos, types: .existingPlaneUsingExtent)
         
+        //check if there was a result to the hit test
         guard let hitTest = hitTestResults.first, let _ = hitTest.anchor else {
             return
         }
+        
+        //add image using hit test
         addImage(hitTest)
     }
     
     func addImage(_ hitTest: ARHitTestResult){
+        //create a plane
         let planeGeometry = SCNPlane(width: 0.2, height: 0.35)
         let material = SCNMaterial()
         planeGeometry.materials = [material]
+        
+        //check if the user has selected an image
         guard chosenImage != nil else{
             return
         }
+        
+        //attach the image to the plane
         material.diffuse.contents = chosenImage
         
+        //create a node from our plane
         let imageNode = SCNNode(geometry: planeGeometry)
+        
+        //match the image transform to the hit test anchor transform
         imageNode.transform = SCNMatrix4(hitTest.anchor!.transform)
+        
+        //rotate the node so it stands up vertically, rather than lying flat
         imageNode.eulerAngles = SCNVector3(imageNode.eulerAngles.x + (-1 * .pi / 2), imageNode.eulerAngles.y, imageNode.eulerAngles.z)
+        
+        //position node using the hit test
         imageNode.position = SCNVector3(hitTest.worldTransform.columns.3.x, hitTest.worldTransform.columns.3.y, hitTest.worldTransform.columns.3.z)
         
+        //load picture frame from echoAR platform, using its entry id
         e!.loadSceneFromEntryID(entryID: echoImgEntryId, completion: { (scene) in
+            //get the picture frame node
             guard let selectedNode = scene.rootNode.childNodes.first else {return}
-            print("got it")
+            
+            //position selected node (picture frame), slightly behind the image, and set the euler angles
+            // of the selected node
             selectedNode.position = SCNVector3(hitTest.worldTransform.columns.3.x, hitTest.worldTransform.columns.3.y, hitTest.worldTransform.columns.3.z - 0.01)
             selectedNode.eulerAngles = imageNode.eulerAngles
-                //SCNVector3(selectedNode.eulerAngles.x, selectedNode.eulerAngles.y, selectedNode.eulerAngles.z + (-1 * .pi / 2))
             
+            //scale down picture frame node
+            //0.043 is a number arrived at through trial, that gives a good picture frame size for our image
             let action = SCNAction.scale(by: 0.043, duration: 0.3)
             selectedNode.runAction(action)
             
+            //add picture frame to scene
             self.sceneView.scene.rootNode.addChildNode(selectedNode)
         })
         
         
+        //add image to scene
         sceneView.scene.rootNode.addChildNode(imageNode)
         
     }
@@ -121,10 +165,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     //MARK: image picker delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        //get the users selected image
         guard let image = info[.editedImage] as? UIImage else {return}
         self.chosenImage = image;
-        print(image)
+
         self.dismiss(animated: true) {
+            //show a preview of the users selected image
+            //and show text prompt to user
             self.imageAddedText.alpha = 1.0
             self.previewImageView.image = image
             self.previewImageView.alpha = 1.0
@@ -132,6 +179,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        //if a user clicks cancel when adding an image,
+        //dismiss the image picker
         self.dismiss(animated: true, completion: nil)
     }
     

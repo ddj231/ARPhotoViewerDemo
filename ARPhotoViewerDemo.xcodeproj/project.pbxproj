@@ -13,6 +13,9 @@
 		2158BE692526C1F800629717 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2158BE682526C1F800629717 /* Assets.xcassets */; };
 		2158BE6C2526C1F800629717 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2158BE6A2526C1F800629717 /* LaunchScreen.storyboard */; };
 		2158BE742526C3F700629717 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2158BE732526C3F700629717 /* ViewController.swift */; };
+		21C040A52534FD7B0062F297 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C040A42534FD7A0062F297 /* Entry.swift */; };
+		21C040A82534FD7E0062F297 /* RemoteTransformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C040A72534FD7E0062F297 /* RemoteTransformation.swift */; };
+		21C040AD2534FDBE0062F297 /* EchoAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C040AC2534FDBE0062F297 /* EchoAR.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,10 @@
 		2158BE6B2526C1F800629717 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2158BE6D2526C1F800629717 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2158BE732526C3F700629717 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		21C040A42534FD7A0062F297 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		21C040A72534FD7E0062F297 /* RemoteTransformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteTransformation.swift; sourceTree = "<group>"; };
+		21C040AA2534FD810062F297 /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		21C040AC2534FDBE0062F297 /* EchoAR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EchoAR.swift; path = ../../../Downloads/echoARSwiftSDK/EchoAR.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +63,10 @@
 		2158BE5E2526C1F600629717 /* ARPhotoViewerDemo */ = {
 			isa = PBXGroup;
 			children = (
+				21C040AC2534FDBE0062F297 /* EchoAR.swift */,
+				21C040A42534FD7A0062F297 /* Entry.swift */,
+				21C040A72534FD7E0062F297 /* RemoteTransformation.swift */,
+				21C040AA2534FD810062F297 /* LICENSE.md */,
 				2158BE5F2526C1F600629717 /* AppDelegate.swift */,
 				2158BE632526C1F600629717 /* Experience.rcproject */,
 				2158BE652526C1F600629717 /* Main.storyboard */,
@@ -138,9 +149,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21C040A82534FD7E0062F297 /* RemoteTransformation.swift in Sources */,
+				21C040A52534FD7B0062F297 /* Entry.swift in Sources */,
 				2158BE742526C3F700629717 /* ViewController.swift in Sources */,
 				2158BE602526C1F600629717 /* AppDelegate.swift in Sources */,
 				2158BE642526C1F600629717 /* Experience.rcproject in Sources */,
+				21C040AD2534FDBE0062F297 /* EchoAR.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
